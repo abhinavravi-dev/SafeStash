@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeStash — Know Your Financial Safety Net</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────── */
+:root {
+  --ink:       #0a0a0a;
+  --ink-2:     #3a3a3a;
+  --ink-3:     #7a7a7a;
+  --ink-4:     #b0b0b0;
+  --paper:     #f7f6f2;
+  --white:     #ffffff;
+  --green:     #0d6e3f;
+  --green-2:   #1a9157;
+  --green-bg:  #edf7f2;
+  --green-bd:  #b8dfc9;
+  --amber:     #b45309;
+  --amber-bg:  #fffbeb;
+  --amber-bd:  #fcd34d;
+  --red:       #b91c1c;
+  --red-bg:    #fef2f2;
+  --red-bd:    #fca5a5;
+  --border:    #e5e4df;
+  --card-bg:   #ffffff;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+  --shadow:    0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.12);
+}
+
+/* ─────────────────────────────────────────
+   RESET + BASE
+───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─────────────────────────────────────────
+   HERO
+───────────────────────────────────────── */
+.hero {
+  background: var(--ink);
+  padding: 48px 20px 56px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(13,110,63,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 10% 80%, rgba(13,110,63,0.12) 0%, transparent 60%);
+}
+.hero-inner { position: relative; max-width: 480px; margin: 0 auto; }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero-badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+.hero h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(34px, 8vw, 44px);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.hero h1 em {
+  font-style: italic;
+  color: #4ade80;
+}
+.hero-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 400;
+  line-height: 1.65;
+  max-width: 360px;
+}
+.hero-steps {
+  display: flex;
+  gap: 6px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+.hero-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.3px;
+}
+.hero-step-n {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.4);
+}
+.hero-step-sep { color: rgba(255,255,255,0.15); font-size: 10px; }
+
+/* ─────────────────────────────────────────
+   WRAPPER
+───────────────────────────────────────── */
+.wrap { max-width: 480px; margin: 0 auto; padding: 0 16px; }
+
+/* ─────────────────────────────────────────
+   SECTION BLOCKS
+───────────────────────────────────────── */
+.section {
+  padding: 32px 0 0;
+}
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::before {
+  content: '';
+  width: 16px; height: 2px;
+  background: var(--green);
+  border-radius: 2px;
+  display: inline-block;
+}
+.section-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(22px, 5vw, 28px);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+.section-title em { font-style: italic; color: var(--green); }
+.section-sub {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* ─────────────────────────────────────────
+   QUESTION CARDS
+───────────────────────────────────────── */
+.q-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.q-card.answered {
+  border-color: var(--green-bd);
+  box-shadow: 0 0 0 3px var(--green-bg);
+}
+.q-card-head {
+  padding: 18px 18px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.q-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-family: 'Outfit', sans-serif;
+}
+.q-card.answered .q-num { background: var(--green); }
+.q-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.4;
+  flex: 1;
+}
+.q-sub {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  margin-top: 3px;
+  font-weight: 400;
+}
+.q-options {
+  padding: 0 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.q-option {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.q-option:hover { border-color: var(--ink-4); background: #f0efe9; }
+.q-option.selected {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+.q-option-radio {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.18s;
+}
+.q-option.selected .q-option-radio {
+  border-color: var(--green);
+  background: var(--green);
+}
+.q-option-radio::after {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.q-option.selected .q-option-radio::after { opacity: 1; }
+.q-option-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  flex: 1;
+}
+.q-option.selected .q-option-label { color: var(--green); font-weight: 600; }
+.q-option-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+
+/* Multi-select grid for Q2 */
+.q-options-grid {
+  padding: 0 14px 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.q-option-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 13px;
+  cursor: pointer;
+  transition: all 0.18s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.q-option-chip:hover { border-color: var(--ink-4); }
+.q-option-chip.selected {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+.q-chip-icon { font-size: 20px; }
+.q-chip-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  line-height: 1.3;
+}
+.q-option-chip.selected .q-chip-text { color: var(--green); }
+.q-chip-check {
+  width: 16px; height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--border);
+  margin-left: auto;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  color: transparent;
+  transition: all 0.15s;
+}
+.q-option-chip.selected .q-chip-check {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+}
+
+/* ─────────────────────────────────────────
+   EXPENSE INPUTS
+───────────────────────────────────────── */
+.exp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.exp-item label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 5px;
+}
+.inp-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 11px;
+  padding: 10px 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.inp-wrap:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px var(--green-bg);
+}
+.inp-prefix {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-4);
+  margin-right: 4px;
+}
+.inp {
+  background: none;
+  border: none;
+  outline: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  width: 100%;
+}
+.inp::placeholder { color: #d0cfc9; font-weight: 400; }
+
+.total-display {
+  background: var(--ink);
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+}
+.total-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); }
+.total-val { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+.total-sub { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 2px; }
+
+/* ─────────────────────────────────────────
+   SAVINGS INPUT
+───────────────────────────────────────── */
+.savings-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.savings-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.savings-card-sub {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.savings-big-input {
+  display: flex;
+  align-items: center;
+  background: var(--paper);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.savings-big-input:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px var(--green-bg);
+}
+.savings-big-prefix {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink-4);
+  margin-right: 6px;
+}
+.savings-big-inp {
+  background: none;
+  border: none;
+  outline: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  width: 100%;
+}
+.savings-big-inp::placeholder { color: #d8d7d2; font-weight: 400; }
+
+/* Allocation breakdown */
+.alloc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
+.alloc-item {
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.18s;
+  user-select: none;
+}
+.alloc-item:hover { border-color: var(--ink-4); }
+.alloc-item.selected { border-color: var(--green); background: var(--green-bg); }
+.alloc-item-icon { font-size: 18px; margin-bottom: 4px; }
+.alloc-item-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-2);
+  margin-bottom: 1px;
+}
+.alloc-item.selected .alloc-item-name { color: var(--green); }
+.alloc-item-rate {
+  font-size: 10px;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+/* ─────────────────────────────────────────
+   CTA BUTTON
+───────────────────────────────────────── */
+.cta-btn {
+  display: block;
+  width: 100%;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 17px 20px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s, background 0.2s;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.cta-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 100%);
+}
+.cta-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.cta-btn:not(:disabled):active { transform: scale(0.98); }
+.cta-btn.green { background: var(--green); }
+.cta-hint {
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink-4);
+  margin-top: 8px;
+}
+
+/* ─────────────────────────────────────────
+   DIVIDER
+───────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 36px 0 0;
+}
+
+/* ─────────────────────────────────────────
+   REVEAL SECTION
+───────────────────────────────────────── */
+#reveal { display: none; }
+
+/* Expectation vs Reality callout */
+.reality-check {
+  background: var(--ink);
+  border-radius: 20px;
+  padding: 20px 18px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.reality-check::before {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(13,110,63,0.3) 0%, transparent 70%);
+}
+.reality-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 14px;
+}
+.reality-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.reality-col {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 12px 13px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.reality-col-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 6px;
+}
+.reality-col-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.3;
+}
+.reality-verdict {
+  background: rgba(255,255,255,0.04);
+  border-radius: 12px;
+  padding: 12px 14px;
+  border-left: 3px solid #4ade80;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.5;
+}
+.reality-verdict strong { color: #fff; font-weight: 700; }
+
+/* Score card */
+.score-card {
+  border-radius: 20px;
+  padding: 22px 20px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.score-card.critical { background: linear-gradient(135deg, #1a0505 0%, #3a0a0a 100%); }
+.score-card.warning { background: linear-gradient(135deg, #1a1205 0%, #3a2a05 100%); }
+.score-card.safe { background: linear-gradient(135deg, #051a0d 0%, #0a3a1a 100%); }
+
+.score-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+.score-left {}
+.score-eyebrow {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: rgba(255,255,255,0.35); margin-bottom: 4px;
+}
+.score-big {
+  font-family: 'Instrument Serif', serif;
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.score-big.critical { color: #ff6b6b; }
+.score-big.warning { color: #fbbf24; }
+.score-big.safe { color: #4ade80; }
+.score-unit { font-size: 20px; font-weight: 400; opacity: 0.5; }
+.score-descriptor {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  margin-top: 4px;
+}
+.score-right {
+  text-align: right;
+}
+.score-months-val {
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.score-months-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+  margin-top: 3px;
+}
+
+/* Progress bar */
+.score-bar-bg {
+  height: 5px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+.score-bar-fill.critical { background: linear-gradient(90deg, #dc2626, #f87171); }
+.score-bar-fill.warning { background: linear-gradient(90deg, #d97706, #fbbf24); }
+.score-bar-fill.safe { background: linear-gradient(90deg, #059669, #4ade80); }
+
+.score-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.4px;
+  margin-top: 2px;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.stat-card {
+  flex: 1;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 12px;
+  box-shadow: var(--shadow-sm);
+}
+.stat-label { font-size: 10px; font-weight: 600; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+.stat-val { font-size: 20px; font-weight: 800; color: var(--ink); letter-spacing: -0.5px; }
+.stat-val.green { color: var(--green); }
+.stat-val.red { color: var(--red); }
+.stat-val.amber { color: var(--amber); }
+.stat-sub { font-size: 10px; color: var(--ink-4); margin-top: 2px; }
+
+/* ─────────────────────────────────────────
+   SCENARIO CARDS
+───────────────────────────────────────── */
+.scenario-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+  padding: 0 2px;
+}
+.scenario {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.scenario.critical { border-color: var(--red-bd); }
+.scenario.warning { border-color: var(--amber-bd); }
+.scenario.safe { border-color: var(--green-bd); }
+
+.scenario-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+}
+.scenario-icon { font-size: 22px; }
+.scenario-info { flex: 1; }
+.scenario-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.scenario-desc { font-size: 11px; color: var(--ink-3); margin-top: 1px; }
+.scenario-badge {
+  font-size: 10px; font-weight: 800;
+  padding: 4px 10px; border-radius: 20px;
+  letter-spacing: 0.3px; flex-shrink: 0;
+}
+.scenario-badge.critical { background: var(--red-bg); color: var(--red); }
+.scenario-badge.warning { background: var(--amber-bg); color: var(--amber); }
+.scenario-badge.safe { background: var(--green-bg); color: var(--green); }
+
+.scenario-body {
+  padding: 0 16px 16px;
+}
+.scenario-meter {
+  height: 7px;
+  background: var(--paper);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.scenario-meter-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+.scenario-meter-fill.critical { background: linear-gradient(90deg, var(--red), #f87171); }
+.scenario-meter-fill.warning { background: linear-gradient(90deg, var(--amber), #fbbf24); }
+.scenario-meter-fill.safe { background: linear-gradient(90deg, var(--green), #34d399); }
+
+.scenario-stats {
+  display: flex;
+  gap: 10px;
+}
+.sc-stat { flex: 1; }
+.sc-stat-val { font-size: 16px; font-weight: 800; color: var(--ink); letter-spacing: -0.5px; }
+.sc-stat-label { font-size: 10px; color: var(--ink-3); margin-top: 1px; font-weight: 500; }
+
+/* ─────────────────────────────────────────
+   JOURNEY PATHS
+───────────────────────────────────────── */
+/* Journey 1: Build the fund */
+.journey-1 { display: none; }
+.journey-2 { display: none; }
+
+.insight-banner {
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  border-left: 4px solid;
+}
+.insight-banner.critical {
+  background: var(--red-bg);
+  border-color: var(--red);
+}
+.insight-banner.warning {
+  background: var(--amber-bg);
+  border-color: var(--amber);
+}
+.insight-banner-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.insight-banner-text {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+.insight-banner-text strong { font-weight: 700; color: var(--ink); }
+
+/* Monthly savings path */
+.path-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.path-head {
+  background: var(--ink);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.path-head-title { font-size: 13px; font-weight: 700; color: #fff; }
+.path-head-sub { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+.path-head-gap {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+.path-options { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.path-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+  user-select: none;
+}
+.path-option:hover { border-color: var(--ink-4); }
+.path-option.selected {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+.path-mo {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--ink-4);
+  width: 42px;
+  text-align: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.path-option.selected .path-mo { color: var(--green); }
+.path-info { flex: 1; }
+.path-label { font-size: 13px; font-weight: 700; color: var(--ink); }
+.path-detail { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+.path-monthly-val {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ink);
+  text-align: right;
+  flex-shrink: 0;
+}
+.path-monthly-unit { font-size: 10px; font-weight: 500; color: var(--ink-4); }
+.path-option.selected .path-monthly-val { color: var(--green); }
+
+/* Journey 2: Upgrade the allocation */
+.upgrade-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.upgrade-head {
+  background: linear-gradient(135deg, #051a0d 0%, #0a2e18 100%);
+  padding: 18px;
+}
+.upgrade-eyebrow {
+  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 5px;
+}
+.upgrade-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.3;
+}
+.upgrade-title em { font-style: italic; color: #4ade80; }
+
+.comparison-table { padding: 16px; }
+.cmp-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 10px;
+}
+.cmp-row:last-child { border-bottom: none; }
+.cmp-label { font-size: 12px; font-weight: 600; color: var(--ink-2); flex: 1; }
+.cmp-now {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red);
+  text-align: right;
+  min-width: 70px;
+}
+.cmp-arrow { font-size: 12px; color: var(--ink-4); }
+.cmp-better {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+  text-align: right;
+  min-width: 70px;
+}
+
+.earning-highlight {
+  background: linear-gradient(135deg, var(--green), #1a9157);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.eh-icon { font-size: 32px; flex-shrink: 0; }
+.eh-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.6); margin-bottom: 2px; }
+.eh-val { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1; }
+.eh-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 3px; }
+
+/* ─────────────────────────────────────────
+   FD RECOMMENDATION
+───────────────────────────────────────── */
+.fd-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+}
+.fd-top {
+  background: linear-gradient(135deg, #071f0f 0%, #0f3320 100%);
+  padding: 20px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.fd-top::after {
+  content: '';
+  position: absolute;
+  right: -40px; top: -40px;
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background: rgba(74, 222, 128, 0.06);
+}
+.fd-eyebrow {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 6px;
+}
+.fd-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px; font-weight: 400; color: #fff; line-height: 1.3;
+}
+.fd-title em { font-style: italic; color: #4ade80; }
+.fd-rate-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(74,222,128,0.15);
+  border: 1px solid rgba(74,222,128,0.25);
+  border-radius: 20px;
+  padding: 5px 12px;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4ade80;
+}
+
+.fd-benefits { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.fd-benefit { display: flex; align-items: flex-start; gap: 12px; }
+.fd-benefit-icon {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  background: var(--green-bg);
+  border: 1px solid var(--green-bd);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.fd-benefit-label { font-size: 13px; font-weight: 700; color: var(--ink); }
+.fd-benefit-sub { font-size: 11px; color: var(--ink-3); margin-top: 2px; line-height: 1.4; }
+
+/* FD comparison table */
+.fd-compare {
+  margin: 0;
+  border-top: 1px solid var(--border);
+}
+.fd-compare-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 12px 16px 8px;
+  gap: 6px;
+}
+.fd-compare-h-empty {}
+.fd-compare-h-col {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-align: center;
+  padding: 5px 6px;
+  border-radius: 8px;
+}
+.fd-compare-h-col.bad { background: var(--red-bg); color: var(--red); }
+.fd-compare-h-col.good { background: var(--green-bg); color: var(--green); }
+
+.fd-compare-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 10px 16px;
+  gap: 6px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+.fd-compare-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+.fd-compare-bad {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red);
+  text-align: center;
+}
+.fd-compare-neutral {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-3);
+  text-align: center;
+}
+.fd-compare-good {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+  text-align: center;
+}
+
+.fd-cta-wrap {
+  padding: 0 16px 16px;
+}
+.fd-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 17px 20px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.fd-cta:active { transform: scale(0.98); }
+.fd-cta-sub {
+  text-align: center;
+  font-size: 10.5px;
+  color: var(--ink-4);
+  margin-top: 8px;
+}
+
+/* ─────────────────────────────────────────
+   CC UNLOCK
+───────────────────────────────────────── */
+.cc-unlock { display: none; margin-top: 8px; }
+.cc-unlock-trigger {
+  background: var(--card-bg);
+  border: 1.5px dashed var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+  user-select: none;
+}
+.cc-unlock-trigger:hover { border-color: var(--ink-4); background: var(--paper); }
+.cc-unlock-icon { font-size: 28px; margin-bottom: 6px; }
+.cc-unlock-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.cc-unlock-sub { font-size: 12px; color: var(--ink-3); }
+.cc-unlock-hint { font-size: 11px; color: var(--green); font-weight: 600; margin-top: 8px; }
+
+.cc-content {
+  display: none;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  animation: fadeUp 0.4s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.cc-top {
+  background: linear-gradient(135deg, #1a1035 0%, #2d1f5e 100%);
+  padding: 20px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.cc-top::before {
+  content: '';
+  position: absolute;
+  top: -20px; right: -20px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: rgba(167,139,250,0.15);
+}
+.cc-eyebrow {
+  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 5px;
+}
+.cc-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px; font-weight: 400; color: #fff; line-height: 1.3;
+}
+.cc-title em { font-style: italic; color: #c4b5fd; }
+
+/* Card visual */
+.cc-visual {
+  margin-top: 14px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.cc-visual-left {}
+.cc-visual-logo { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+.cc-visual-limit-label { font-size: 9px; color: rgba(255,255,255,0.3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.cc-visual-limit { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+.cc-visual-right { text-align: right; }
+.cc-visual-type { font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 600; margin-bottom: 4px; }
+.cc-chip { font-size: 20px; }
+
+.cc-perks { padding: 14px 16px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cc-perk {
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+}
+.cc-perk-icon { font-size: 18px; margin-bottom: 4px; }
+.cc-perk-label { font-size: 11px; font-weight: 700; color: var(--ink); }
+.cc-perk-sub { font-size: 10px; color: var(--ink-3); margin-top: 1px; line-height: 1.3; }
+
+.cc-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 16px 16px;
+  background: rgba(167,139,250,0.12);
+  border: 1px solid rgba(167,139,250,0.25);
+  border-radius: 12px;
+  padding: 13px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #7c3aed;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.cc-link:hover { background: rgba(167,139,250,0.2); }
+
+/* ─────────────────────────────────────────
+   SHARE CARD
+───────────────────────────────────────── */
+.share-card {
+  background: var(--ink);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+.share-card-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+.share-score-big {
+  font-family: 'Instrument Serif', serif;
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.share-score-big.critical { color: #f87171; }
+.share-score-big.warning { color: #fbbf24; }
+.share-score-big.safe { color: #4ade80; }
+.share-months { font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 14px; }
+.share-cta {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-block;
+}
+.share-cta:hover { background: rgba(255,255,255,0.12); }
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+.footer {
+  padding: 28px 20px 48px;
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.footer-powered {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-4);
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+.footer-brand {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--green);
+  margin-bottom: 14px;
+}
+.footer-legal {
+  font-size: 10px;
+  color: var(--ink-4);
+  line-height: 1.7;
+}
+
+/* ─────────────────────────────────────────
+   ANIMATIONS
+───────────────────────────────────────── */
+.fade-in {
+  animation: fadeIn 0.5s ease both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════
+     HERO
+══════════════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Free · 2 minute check
+    </div>
+    <h1>Is your money<br>actually <em>safe?</em></h1>
+    <p class="hero-sub">Most people think they're financially prepared. Most aren't. Find out where you really stand — in under 2 minutes.</p>
+    <div class="hero-steps">
+      <div class="hero-step"><div class="hero-step-n">1</div> 3 quick questions</div>
+      <div class="hero-step-sep">→</div>
+      <div class="hero-step"><div class="hero-step-n">2</div> Your numbers</div>
+      <div class="hero-step-sep">→</div>
+      <div class="hero-step"><div class="hero-step-n">3</div> Your reality check</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════
+     SECTION 1: QUESTIONS
+══════════════════════ -->
+<div class="wrap">
+  <div class="section reveal">
+    <div class="section-label">Step 1</div>
+    <div class="section-title">Before the numbers,<br><em>your gut feel</em></div>
+    <div class="section-sub">Answer honestly — we'll show you how right you were.</div>
+
+    <!-- Q1 -->
+    <div class="q-card" id="q1-card">
+      <div class="q-card-head">
+        <div class="q-num">1</div>
+        <div>
+          <div class="q-text">If your income stopped tomorrow, how long could you cover your life?</div>
+          <div class="q-sub">Be honest — don't include money that's hard to access</div>
+        </div>
+      </div>
+      <div class="q-options">
+        <div class="q-option" onclick="selectQ1(this, 'less1')" data-val="less1">
+          <div class="q-option-radio"></div>
+          <div class="q-option-label">Less than a month</div>
+          <span class="q-option-tag" style="background:#fef2f2;color:#b91c1c;">😬 Risky</span>
+        </div>
+        <div class="q-option" onclick="selectQ1(this, '1to3')" data-val="1to3">
+          <div class="q-option-radio"></div>
+          <div class="q-option-label">1–3 months</div>
+          <span class="q-option-tag" style="background:#fffbeb;color:#b45309;">⚡ Partial</span>
+        </div>
+        <div class="q-option" onclick="selectQ1(this, '3plus')" data-val="3plus">
+          <div class="q-option-radio"></div>
+          <div class="q-option-label">3–6 months or more</div>
+          <span class="q-option-tag" style="background:#edf7f2;color:#0d6e3f;">✓ Good</span>
+        </div>
+        <div class="q-option" onclick="selectQ1(this, 'unsure')" data-val="unsure">
+          <div class="q-option-radio"></div>
+          <div class="q-option-label">I'm not sure</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card" id="q2-card">
+      <div class="q-card-head">
+        <div class="q-num">2</div>
+        <div>
+          <div class="q-text">Which of these would genuinely stress you out financially?</div>
+          <div class="q-sub">Select all that apply</div>
+        </div>
+      </div>
+      <div class="q-options-grid">
+        <div class="q-option-chip" onclick="toggleQ2(this, 'job')">
+          <div class="q-chip-icon">💼</div>
+          <div class="q-chip-text">Losing my job</div>
+          <div class="q-chip-check">✓</div>
+        </div>
+        <div class="q-option-chip" onclick="toggleQ2(this, 'medical')">
+          <div class="q-chip-icon">🏥</div>
+          <div class="q-chip-text">Medical emergency</div>
+          <div class="q-chip-check">✓</div>
+        </div>
+        <div class="q-option-chip" onclick="toggleQ2(this, 'repair')">
+          <div class="q-chip-icon">🔧</div>
+          <div class="q-chip-text">Major home/car repair</div>
+          <div class="q-chip-check">✓</div>
+        </div>
+        <div class="q-option-chip" onclick="toggleQ2(this, 'family')">
+          <div class="q-chip-icon">👨‍👩‍👧</div>
+          <div class="q-chip-text">Family obligation</div>
+          <div class="q-chip-check">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card" id="q3-card">
+      <div class="q-card-head">
+        <div class="q-num">3</div>
+        <div>
+          <div class="q-text">Where does most of your "safety money" sit right now?</div>
+          <div class="q-sub">The money you'd reach for first in an emergency</div>
+        </div>
+      </div>
+      <div class="q-options">
+        <div class="q-option" onclick="selectQ3(this, 'savings')" data-val="savings">
+          <div class="q-option-radio"></div>
+          <div class="q-option-label">Savings account or cash</div>
+          <span class="q-option-tag" style="background:#f0f0f0;color:#555;">~3% p.a.</span>
+        </div>
+        <div class="q-option" onclick="selectQ3(this, 'fd')" data-val="fd">
+          <div class="q-option-radio"></div>
+          <div class="q-option-label">Fixed Deposits</div>
+          <span class="q-option-tag" style="background:#edf7f2;color:#0d6e3f;">~7.5% p.a.</span>
+        </div>
+        <div class="q-option" onclick="selectQ3(this, 'mf')" data-val="mf">
+          <div class="q-option-radio"></div>
+          <div class="q-option-label">Mutual Funds / Stocks</div>
+          <span class="q-option-tag" style="background:#fffbeb;color:#b45309;">Market risk</span>
+        </div>
+        <div class="q-option" onclick="selectQ3(this, 'none')" data-val="none">
+          <div class="q-option-radio"></div>
+          <div class="q-option-label">I don't really have safety money set aside</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════
+       SECTION 2: YOUR NUMBERS
+  ══════════════════════ -->
+  <div class="divider"></div>
+  <div class="section reveal">
+    <div class="section-label">Step 2</div>
+    <div class="section-title">Now, the<br><em>real numbers</em></div>
+    <div class="section-sub">Takes 60 seconds. The more accurate you are, the more useful your result.</div>
+
+    <!-- Expenses -->
+    <div class="savings-card" style="margin-bottom:12px;">
+      <div class="savings-card-title">Monthly expenses</div>
+      <div class="savings-card-sub">What does your life actually cost per month? Include everything you'd still pay if you lost income.</div>
+      <div class="exp-grid">
+        <div class="exp-item">
+          <label>🏠 Rent / EMI</label>
+          <div class="inp-wrap"><span class="inp-prefix">₹</span><input class="inp" id="e-rent" type="number" placeholder="0" oninput="updateCalc()"></div>
+        </div>
+        <div class="exp-item">
+          <label>🛒 Food & Groceries</label>
+          <div class="inp-wrap"><span class="inp-prefix">₹</span><input class="inp" id="e-food" type="number" placeholder="0" oninput="updateCalc()"></div>
+        </div>
+        <div class="exp-item">
+          <label>🚗 Transport</label>
+          <div class="inp-wrap"><span class="inp-prefix">₹</span><input class="inp" id="e-transport" type="number" placeholder="0" oninput="updateCalc()"></div>
+        </div>
+        <div class="exp-item">
+          <label>💡 Bills & Utilities</label>
+          <div class="inp-wrap"><span class="inp-prefix">₹</span><input class="inp" id="e-bills" type="number" placeholder="0" oninput="updateCalc()"></div>
+        </div>
+        <div class="exp-item">
+          <label>💊 Health / Insurance</label>
+          <div class="inp-wrap"><span class="inp-prefix">₹</span><input class="inp" id="e-health" type="number" placeholder="0" oninput="updateCalc()"></div>
+        </div>
+        <div class="exp-item">
+          <label>🎯 Everything else</label>
+          <div class="inp-wrap"><span class="inp-prefix">₹</span><input class="inp" id="e-other" type="number" placeholder="0" oninput="updateCalc()"></div>
+        </div>
+      </div>
+      <div class="total-display">
+        <div>
+          <div class="total-label">Monthly total</div>
+          <div class="total-sub" id="target-hint">Enter expenses to see your 3-month target</div>
+        </div>
+        <div class="total-val" id="exp-total">₹0</div>
+      </div>
+    </div>
+
+    <!-- Liquid savings -->
+    <div class="savings-card">
+      <div class="savings-card-title">Your liquid savings</div>
+      <div class="savings-card-sub">Total money you could reliably access within a week — savings account and FDs only. Don't count MFs or stocks: their value can drop sharply right when you need them most.</div>
+      <div class="savings-big-input">
+        <span class="savings-big-prefix">₹</span>
+        <input class="savings-big-inp" id="liquid-savings" type="number" placeholder="0" oninput="updateCalc()">
+      </div>
+
+      <div style="margin-top:12px;font-size:11px;font-weight:600;color:var(--ink-3);margin-bottom:8px;">How is it currently split?</div>
+      <div class="alloc-grid">
+        <div class="alloc-item" onclick="toggleAlloc(this,'savings-acc')" data-alloc="savings-acc">
+          <div class="alloc-item-icon">🏦</div>
+          <div class="alloc-item-name">Savings account</div>
+          <div class="alloc-item-rate">~3% p.a.</div>
+        </div>
+        <div class="alloc-item" onclick="toggleAlloc(this,'fd')" data-alloc="fd">
+          <div class="alloc-item-icon">📋</div>
+          <div class="alloc-item-name">Fixed Deposits</div>
+          <div class="alloc-item-rate">~7.5% p.a.</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:10px 12px;display:flex;gap:8px;align-items:flex-start;">
+        <span style="font-size:15px;flex-shrink:0;">⚠️</span>
+        <div style="font-size:11px;color:#7a4f00;line-height:1.5;font-weight:500;">
+          <strong style="color:#5a3800;">Don't count MFs or stocks as emergency money.</strong> Markets tend to fall hardest during economic crises — exactly when you'd need the cash. An emergency fund should never depend on market conditions.
+        </div>
+      </div>
+    </div>
+
+    <button class="cta-btn" id="reveal-btn" onclick="showReveal()" disabled>
+      Show me my reality check →
+    </button>
+    <div class="cta-hint" id="reveal-hint">Enter your monthly expenses to continue</div>
+  </div>
+</div>
+
+<!-- ══════════════════════
+     SECTION 3: REVEAL
+══════════════════════ -->
+<div id="reveal">
+  <div style="height:1px;background:var(--border);margin-top:36px;"></div>
+  <div class="wrap">
+    <div class="section">
+      <div class="section-label">Your result</div>
+      <div class="section-title">Here's what the<br><em>numbers say</em></div>
+    </div>
+
+    <!-- Expectation vs Reality -->
+    <div class="reality-check fade-in" id="reality-block">
+      <div class="reality-eyebrow">Your gut vs the math</div>
+      <div class="reality-row">
+        <div class="reality-col">
+          <div class="reality-col-label">You thought</div>
+          <div class="reality-col-val" id="reality-thought">—</div>
+        </div>
+        <div class="reality-col">
+          <div class="reality-col-label">You actually have</div>
+          <div class="reality-col-val" id="reality-actual">—</div>
+        </div>
+      </div>
+      <div class="reality-verdict" id="reality-verdict"></div>
+    </div>
+
+    <!-- Score -->
+    <div class="score-card fade-in" id="score-card">
+      <div class="score-top">
+        <div class="score-left">
+          <div class="score-eyebrow">SafeStash Score</div>
+          <div class="score-big" id="score-num">0</div>
+          <div class="score-descriptor" id="score-desc">—</div>
+        </div>
+        <div class="score-right">
+          <div class="score-months-val" id="score-months">0</div>
+          <div class="score-months-label">months covered</div>
+        </div>
+      </div>
+      <div class="score-bar-bg">
+        <div class="score-bar-fill" id="score-bar" style="width:0%"></div>
+      </div>
+      <div class="score-bar-labels">
+        <span>0</span><span>Vulnerable</span><span>Partial</span><span>Safe</span><span>100</span>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row fade-in">
+      <div class="stat-card">
+        <div class="stat-label">Monthly burn</div>
+        <div class="stat-val" id="stat-monthly">₹0</div>
+        <div class="stat-sub">your cost of living</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">3-month target</div>
+        <div class="stat-val" id="stat-target">₹0</div>
+        <div class="stat-sub">minimum safety net</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Gap to close</div>
+        <div class="stat-val" id="stat-gap">₹0</div>
+        <div class="stat-sub" id="stat-gap-sub">amount needed</div>
+      </div>
+    </div>
+
+    <!-- Scenarios (personalised to Q2) -->
+    <div id="scenarios-wrap">
+      <div class="scenario-section-title" style="margin-top:4px;">Your selected scenarios</div>
+
+      <div class="scenario fade-in" id="sc-job" style="display:none;">
+        <div class="scenario-head">
+          <div class="scenario-icon">💼</div>
+          <div class="scenario-info">
+            <div class="scenario-name">Job loss</div>
+            <div class="scenario-desc" id="sc-job-desc">No income, expenses continue</div>
+          </div>
+          <div class="scenario-badge" id="sc-job-badge">—</div>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-meter"><div class="scenario-meter-fill" id="sc-job-fill" style="width:0%"></div></div>
+          <div class="scenario-stats">
+            <div class="sc-stat"><div class="sc-stat-val" id="sc-job-months">—</div><div class="sc-stat-label">months covered</div></div>
+            <div class="sc-stat"><div class="sc-stat-val" id="sc-job-burn">—</div><div class="sc-stat-label">monthly cost</div></div>
+            <div class="sc-stat"><div class="sc-stat-val" id="sc-job-short">—</div><div class="sc-stat-label">shortfall</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario fade-in" id="sc-medical" style="display:none;">
+        <div class="scenario-head">
+          <div class="scenario-icon">🏥</div>
+          <div class="scenario-info">
+            <div class="scenario-name">Medical emergency</div>
+            <div class="scenario-desc">Based on avg hospitalisation cost</div>
+          </div>
+          <div class="scenario-badge" id="sc-med-badge">—</div>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-meter"><div class="scenario-meter-fill" id="sc-med-fill" style="width:0%"></div></div>
+          <div class="scenario-stats">
+            <div class="sc-stat"><div class="sc-stat-val" id="sc-med-covered">—</div><div class="sc-stat-label">of ₹2L cost covered</div></div>
+            <div class="sc-stat"><div class="sc-stat-val" id="sc-med-rem">—</div><div class="sc-stat-label">remaining liquid</div></div>
+            <div class="sc-stat"><div class="sc-stat-val" id="sc-med-short">—</div><div class="sc-stat-label">shortfall</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario fade-in" id="sc-repair" style="display:none;">
+        <div class="scenario-head">
+          <div class="scenario-icon">🔧</div>
+          <div class="scenario-info">
+            <div class="scenario-name">Major home/car repair</div>
+            <div class="scenario-desc">Avg ₹75K emergency repair cost</div>
+          </div>
+          <div class="scenario-badge" id="sc-repair-badge">—</div>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-meter"><div class="scenario-meter-fill" id="sc-repair-fill" style="width:0%"></div></div>
+          <div class="scenario-stats">
+            <div class="sc-stat"><div class="sc-stat-val" id="sc-repair-covered">—</div><div class="sc-stat-label">of ₹75K cost covered</div></div>
+            <div class="sc-stat"><div class="sc-stat-val" id="sc-repair-rem">—</div><div class="sc-stat-label">remaining liquid</div></div>
+            <div class="sc-stat"><div class="sc-stat-val" id="sc-repair-short">—</div><div class="sc-stat-label">shortfall</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario fade-in" id="sc-family" style="display:none;">
+        <div class="scenario-head">
+          <div class="scenario-icon">👨‍👩‍👧</div>
+          <div class="scenario-info">
+            <div class="scenario-name">Family obligation</div>
+            <div class="scenario-desc">Avg ₹1L unplanned family expense</div>
+          </div>
+          <div class="scenario-badge" id="sc-family-badge">—</div>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-meter"><div class="scenario-meter-fill" id="sc-family-fill" style="width:0%"></div></div>
+          <div class="scenario-stats">
+            <div class="sc-stat"><div class="sc-stat-val" id="sc-family-covered">—</div><div class="sc-stat-label">of ₹1L cost covered</div></div>
+            <div class="sc-stat"><div class="sc-stat-val" id="sc-family-rem">—</div><div class="sc-stat-label">remaining liquid</div></div>
+            <div class="sc-stat"><div class="sc-stat-val" id="sc-family-short">—</div><div class="sc-stat-label">shortfall</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── JOURNEY 1: Build the fund ── -->
+    <div class="journey-1 fade-in" id="j1">
+      <div class="divider" style="margin-bottom:28px;"></div>
+      <div class="section-label">What to do</div>
+      <div class="section-title" style="margin-bottom:6px;">You need to build<br><em>your safety net</em></div>
+      <div class="section-sub">The gap is real but it's closable. Here's a plan.</div>
+
+      <div class="insight-banner" id="j1-banner">
+        <div class="insight-banner-title" id="j1-banner-title">—</div>
+        <div class="insight-banner-text" id="j1-banner-text">—</div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-head">
+          <div>
+            <div class="path-head-title">Your monthly savings plan</div>
+            <div class="path-head-sub">Choose your pace — all paths get you there</div>
+          </div>
+          <div class="path-head-gap" id="j1-gap-display">—</div>
+        </div>
+        <div class="path-options" id="j1-path-options"></div>
+      </div>
+    </div>
+
+    <!-- ── JOURNEY 2: Upgrade allocation ── -->
+    <div class="journey-2 fade-in" id="j2">
+      <div class="divider" style="margin-bottom:28px;"></div>
+      <div class="section-label">What to do</div>
+      <div class="section-title" style="margin-bottom:6px;">You're covered — but<br><em>leaving money behind</em></div>
+      <div class="section-sub">Your safety net exists. But where it lives is costing you.</div>
+
+      <div class="upgrade-card">
+        <div class="upgrade-head">
+          <div class="upgrade-eyebrow">The silent cost of convenience</div>
+          <div class="upgrade-title">Your ₹<span id="j2-amount">—</span> emergency fund<br>is <em>underperforming</em></div>
+        </div>
+        <div class="comparison-table">
+          <div class="cmp-row" style="border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:2px;">
+            <div class="cmp-label" style="font-size:10px;color:var(--ink-4);">Where it sits</div>
+            <div class="cmp-now" style="font-size:10px;color:var(--ink-4);">Returns</div>
+            <div class="cmp-arrow"></div>
+            <div class="cmp-better" style="font-size:10px;color:var(--ink-4);">With FD</div>
+          </div>
+          <div class="cmp-row" id="j2-cmp-row">
+            <div class="cmp-label" id="j2-cmp-where">Savings account</div>
+            <div class="cmp-now" id="j2-cmp-now">3%</div>
+            <div class="cmp-arrow">→</div>
+            <div class="cmp-better">7.75%</div>
+          </div>
+          <div class="cmp-row">
+            <div class="cmp-label">Liquidity</div>
+            <div class="cmp-now" style="color:var(--green);">Same</div>
+            <div class="cmp-arrow">→</div>
+            <div class="cmp-better">Same</div>
+          </div>
+          <div class="cmp-row">
+            <div class="cmp-label">Capital safety</div>
+            <div class="cmp-now" style="color:var(--green);">Same</div>
+            <div class="cmp-arrow">→</div>
+            <div class="cmp-better">Same</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="earning-highlight">
+        <div class="eh-icon">💰</div>
+        <div>
+          <div class="eh-label">Extra you'd earn this year, for zero additional risk</div>
+          <div class="eh-val" id="j2-extra">₹—</div>
+          <div class="eh-sub" id="j2-extra-sub">on your ₹— at 7.75% vs current rate</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FD RECOMMENDATION (both journeys) ── -->
+    <div class="fd-card fade-in" id="fd-section" style="display:none;">
+      <div class="fd-top">
+        <div class="fd-eyebrow">The right vehicle</div>
+        <div class="fd-title" id="fd-title">Start building with a<br><em>Fixed Deposit</em></div>
+        <div class="fd-rate-pill">⚡ Up to 7.75% p.a. · Up to ₹5L insured</div>
+      </div>
+      <div class="fd-compare">
+        <div class="fd-compare-header">
+          <div class="fd-compare-h-empty"></div>
+          <div class="fd-compare-h-col bad">Savings account</div>
+          <div class="fd-compare-h-col good">FD on Stable Money</div>
+        </div>
+        <div class="fd-compare-row">
+          <div class="fd-compare-label">Returns</div>
+          <div class="fd-compare-bad">~3% p.a.</div>
+          <div class="fd-compare-good">Up to 7.75% p.a.</div>
+        </div>
+        <div class="fd-compare-row">
+          <div class="fd-compare-label">Withdraw anytime?</div>
+          <div class="fd-compare-neutral">✓ Yes</div>
+          <div class="fd-compare-good">✓ Yes, 1–2 days</div>
+        </div>
+        <div class="fd-compare-row">
+          <div class="fd-compare-label">Capital safe?</div>
+          <div class="fd-compare-neutral">✓ Yes</div>
+          <div class="fd-compare-good">✓ Yes, DICGC insured</div>
+        </div>
+        <div class="fd-compare-row" style="border-bottom:none;">
+          <div class="fd-compare-label">Extra earned / year</div>
+          <div class="fd-compare-bad">₹0</div>
+          <div class="fd-compare-good" id="fd-extra-earned">+₹—</div>
+        </div>
+      </div>
+      <div class="fd-cta-wrap">
+        <button class="fd-cta" onclick="showCC()">
+          Start your FD on Stable Money →
+        </button>
+        <div class="fd-cta-sub">Minimum ₹2,000 · 3-minute setup · Suryoday Bank · RBI regulated</div>
+      </div>
+    </div>
+
+    <!-- ── CC UNLOCK ── -->
+    <div class="cc-unlock" id="cc-section">
+      <div class="cc-unlock-trigger" id="cc-trigger" onclick="revealCC()">
+        <div class="cc-unlock-icon">🎁</div>
+        <div class="cc-unlock-title">One more thing</div>
+        <div class="cc-unlock-sub">Your FD unlocks something most people don't know about</div>
+        <div class="cc-unlock-hint">Tap to reveal →</div>
+      </div>
+
+      <div class="cc-content" id="cc-content">
+        <div class="cc-top">
+          <div class="cc-eyebrow">FD-backed credit card</div>
+          <div class="cc-title">Your emergency fund<br>becomes your <em>credit limit</em></div>
+          <div class="cc-visual">
+            <div class="cc-visual-left">
+              <div class="cc-visual-logo">Suryoday Bank</div>
+              <div class="cc-visual-limit-label">Credit limit</div>
+              <div class="cc-visual-limit" id="cc-limit">₹—</div>
+            </div>
+            <div class="cc-visual-right">
+              <div class="cc-visual-type">Secured Card</div>
+              <div class="cc-chip">💳</div>
+            </div>
+          </div>
+        </div>
+        <div class="cc-perks">
+          <div class="cc-perk">
+            <div class="cc-perk-icon">✈️</div>
+            <div class="cc-perk-label">Airport lounge access</div>
+            <div class="cc-perk-sub">Domestic lounges included</div>
+          </div>
+          <div class="cc-perk">
+            <div class="cc-perk-icon">💸</div>
+            <div class="cc-perk-label">0.5% cashback</div>
+            <div class="cc-perk-sub">On all spends, no cap</div>
+          </div>
+          <div class="cc-perk">
+            <div class="cc-perk-icon">📊</div>
+            <div class="cc-perk-label">Build credit score</div>
+            <div class="cc-perk-sub">No income proof needed</div>
+          </div>
+          <div class="cc-perk">
+            <div class="cc-perk-icon">⚡</div>
+            <div class="cc-perk-label">Instant approval</div>
+            <div class="cc-perk-sub">Approved same day</div>
+          </div>
+        </div>
+        <div class="cc-link" onclick="alert('Opens Stable Money app')">
+          Apply for the secured card →
+        </div>
+      </div>
+    </div>
+
+    <!-- Share card -->
+    <div class="share-card fade-in" id="share-card" style="display:none;">
+      <div class="share-card-title">Your SafeStash Score</div>
+      <div class="share-score-big" id="share-score-num">0</div>
+      <div class="share-months" id="share-months">— months of coverage</div>
+      <div class="share-cta" onclick="shareResult()">📤 Share your result</div>
+    </div>
+
+    <div style="height:40px;"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-powered">Powered by</div>
+  <div class="footer-brand">Stable Money</div>
+  <div class="footer-legal">This tool is for informational purposes only and does not constitute financial advice. Emergency fund benchmarks are based on general financial planning guidelines. FD rates subject to change.</div>
+</div>
+
+<script>
+// ── State ──
+const S = {
+  q1: null,
+  q2: new Set(),
+  q3: null,
+  alloc: new Set(),
+  expenses: 0,
+  liquid: 0,
+};
+
+const PRESETS = { medical: 200000, repair: 75000, family: 100000 };
+const RATE_FD = 0.0775;
+const RATE_SAVINGS = 0.03;
+const RATE_MF = 0.065;
+
+// ── Formatters ──
+function fmt(n) {
+  if (n === 0) return '₹0';
+  if (n >= 100000) return '₹' + (n/100000).toFixed(1).replace(/\.0$/,'') + 'L';
+  if (n >= 1000) return '₹' + Math.round(n/1000) + 'K';
+  return '₹' + Math.round(n).toLocaleString('en-IN');
+}
+function fmtFull(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+function pct(n) { return Math.round(n) + '%'; }
+
+// ── Q1 ──
+function selectQ1(el, val) {
+  document.querySelectorAll('#q1-card .q-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  S.q1 = val;
+  document.getElementById('q1-card').classList.add('answered');
+}
+
+// ── Q2 ──
+function toggleQ2(el, val) {
+  el.classList.toggle('selected');
+  if (S.q2.has(val)) S.q2.delete(val);
+  else S.q2.add(val);
+  if (S.q2.size > 0) document.getElementById('q2-card').classList.add('answered');
+  else document.getElementById('q2-card').classList.remove('answered');
+}
+
+// ── Q3 ──
+function selectQ3(el, val) {
+  document.querySelectorAll('#q3-card .q-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  S.q3 = val;
+  document.getElementById('q3-card').classList.add('answered');
+}
+
+// ── Alloc ──
+function toggleAlloc(el, val) {
+  el.classList.toggle('selected');
+  if (S.alloc.has(val)) S.alloc.delete(val);
+  else S.alloc.add(val);
+}
+
+// ── Calc expenses ──
+function updateCalc() {
+  const ids = ['rent','food','transport','bills','health','other'];
+  S.expenses = ids.reduce((s,id) => s + (parseFloat(document.getElementById('e-'+id).value)||0), 0);
+  S.liquid = parseFloat(document.getElementById('liquid-savings').value) || 0;
+
+  document.getElementById('exp-total').textContent = fmtFull(S.expenses);
+
+  if (S.expenses > 0) {
+    document.getElementById('target-hint').textContent = '3-month target: ' + fmtFull(S.expenses * 3);
+  }
+
+  const btn = document.getElementById('reveal-btn');
+  const hint = document.getElementById('reveal-hint');
+  if (S.expenses > 0) {
+    btn.disabled = false;
+    hint.textContent = S.liquid > 0 ? 'Your numbers are ready' : 'Add liquid savings for a complete picture';
+  } else {
+    btn.disabled = true;
+    hint.textContent = 'Enter your monthly expenses to continue';
+  }
+}
+
+// ── Main reveal ──
+function showReveal() {
+  const exp = S.expenses;
+  const liq = S.liquid;
+  const target = exp * 3;
+  const gap = Math.max(0, target - liq);
+  const months = exp > 0 ? Math.min(liq / exp, 6) : 0;
+  const score = Math.min(100, Math.round((months / 3) * 100));
+  const cls = score >= 80 ? 'safe' : score >= 40 ? 'warning' : 'critical';
+
+  // Show reveal section
+  document.getElementById('reveal').style.display = 'block';
+  document.getElementById('reveal').scrollIntoView({ behavior:'smooth', block:'start' });
+
+  // ── Reality check ──
+  const thoughtMap = {
+    'less1': 'Less than 1 month',
+    '1to3': '1–3 months',
+    '3plus': '3–6 months+',
+    'unsure': 'Not sure',
+    null: 'Not answered'
+  };
+  document.getElementById('reality-thought').textContent = thoughtMap[S.q1] || 'Not answered';
+  document.getElementById('reality-actual').textContent = months.toFixed(1) + ' months (' + score + '/100)';
+
+  let verdict = '';
+  if (!S.q1 || S.q1 === 'unsure') {
+    verdict = `Now you know — you have <strong>${months.toFixed(1)} months of coverage</strong>. ${score >= 80 ? "That's solid, but let's look at whether your money is working as hard as it could." : "There's a gap to close."}`;
+  } else if (S.q1 === '3plus' && score < 80) {
+    verdict = `You thought you were covered. The math says otherwise — you have <strong>${months.toFixed(1)} months</strong>, not the 3+ you estimated. Here's why and what to do.`;
+  } else if (S.q1 === 'less1' && score >= 40) {
+    verdict = `You underestimated yourself — you actually have <strong>${months.toFixed(1)} months of coverage</strong>. Still room to improve, but better than you thought.`;
+  } else if (score >= 80) {
+    verdict = `Your instinct was right — you have <strong>${months.toFixed(1)} months covered</strong>. But covered doesn't mean optimised. Let's see if your money is in the right place.`;
+  } else {
+    verdict = `You have <strong>${months.toFixed(1)} months of real coverage</strong>. ${gap > 0 ? 'There\'s a gap of ' + fmt(gap) + ' to close.' : 'You\'re on track.'}`;
+  }
+  document.getElementById('reality-verdict').innerHTML = verdict;
+
+  // ── Score card ──
+  const scoreCard = document.getElementById('score-card');
+  scoreCard.className = 'score-card fade-in ' + cls;
+  document.getElementById('score-num').textContent = score;
+  document.getElementById('score-num').className = 'score-big ' + cls;
+  document.getElementById('score-months').textContent = months.toFixed(1) + 'mo';
+  document.getElementById('score-bar').className = 'score-bar-fill ' + cls;
+  setTimeout(() => document.getElementById('score-bar').style.width = score + '%', 100);
+
+  const descs = {
+    critical: 'Vulnerable — a single emergency could derail your finances',
+    warning: 'Partial — you\'d survive short shocks, but not a prolonged crisis',
+    safe: 'Well-protected — you have a real safety net'
+  };
+  document.getElementById('score-desc').textContent = descs[cls];
+
+  // ── Stats ──
+  document.getElementById('stat-monthly').textContent = fmt(exp);
+  document.getElementById('stat-target').textContent = fmt(target);
+  const gapEl = document.getElementById('stat-gap');
+  const gapSubEl = document.getElementById('stat-gap-sub');
+  if (gap > 0) {
+    gapEl.textContent = fmt(gap);
+    gapEl.className = 'stat-val red';
+    gapSubEl.textContent = 'still needed';
+  } else {
+    gapEl.textContent = '₹0';
+    gapEl.className = 'stat-val green';
+    gapSubEl.textContent = 'fully covered ✓';
+  }
+
+  // ── Scenarios ──
+  const showScenarios = S.q2.size > 0 ? S.q2 : new Set(['job','medical']);
+
+  if (showScenarios.has('job')) {
+    const jMonths = exp > 0 ? Math.min(liq / exp, 6) : 0;
+    const jShort = Math.max(0, target - liq);
+    const jClass = jMonths >= 3 ? 'safe' : jMonths >= 1 ? 'warning' : 'critical';
+    const sc = document.getElementById('sc-job');
+    sc.style.display = 'block';
+    sc.className = 'scenario fade-in ' + jClass;
+    document.getElementById('sc-job-badge').className = 'scenario-badge ' + jClass;
+    document.getElementById('sc-job-badge').textContent = jMonths >= 3 ? '✓ Safe' : jMonths >= 1 ? '⚡ Partial' : '⚠ At risk';
+    document.getElementById('sc-job-months').textContent = jMonths.toFixed(1) + 'mo';
+    document.getElementById('sc-job-burn').textContent = fmt(exp);
+    document.getElementById('sc-job-short').textContent = jShort > 0 ? fmt(jShort) : 'None ✓';
+    setTimeout(() => document.getElementById('sc-job-fill').style.width = Math.min(100, (jMonths/3)*100) + '%', 200);
+    document.getElementById('sc-job-fill').className = 'scenario-meter-fill ' + jClass;
+  }
+
+  function renderOneTime(scId, badgeId, fillId, covId, remId, shortId, cost) {
+    const covered = Math.min(liq, cost);
+    const rem = Math.max(0, liq - cost);
+    const short = Math.max(0, cost - liq);
+    const ratio = cost > 0 ? Math.min(1, liq / cost) : 0;
+    const cls2 = ratio >= 1 ? 'safe' : ratio >= 0.5 ? 'warning' : 'critical';
+    const sc = document.getElementById(scId);
+    sc.style.display = 'block';
+    sc.className = 'scenario fade-in ' + cls2;
+    document.getElementById(badgeId).className = 'scenario-badge ' + cls2;
+    document.getElementById(badgeId).textContent = ratio >= 1 ? '✓ Covered' : ratio >= 0.5 ? '⚡ Partial' : '⚠ At risk';
+    document.getElementById(covId).textContent = pct(ratio * 100);
+    document.getElementById(remId).textContent = fmt(rem);
+    document.getElementById(shortId).textContent = short > 0 ? fmt(short) : 'None ✓';
+    document.getElementById(fillId).className = 'scenario-meter-fill ' + cls2;
+    setTimeout(() => document.getElementById(fillId).style.width = (ratio * 100) + '%', 200);
+  }
+
+  if (showScenarios.has('medical')) renderOneTime('sc-medical','sc-med-badge','sc-med-fill','sc-med-covered','sc-med-rem','sc-med-short', PRESETS.medical);
+  if (showScenarios.has('repair')) renderOneTime('sc-repair','sc-repair-badge','sc-repair-fill','sc-repair-covered','sc-repair-rem','sc-repair-short', PRESETS.repair);
+  if (showScenarios.has('family')) renderOneTime('sc-family','sc-family-badge','sc-family-fill','sc-family-covered','sc-family-rem','sc-family-short', PRESETS.family);
+
+  // ── Journey branching ──
+  const isWellCovered = score >= 80;
+  const hasSavingsAlloc = S.alloc.has('savings-acc') || S.q3 === 'savings' || S.q3 === 'none' || (!S.alloc.has('fd') && S.alloc.size === 0);
+
+  if (isWellCovered && hasSavingsAlloc && liq > 0) {
+    // Journey 2: upgrade
+    document.getElementById('j2').style.display = 'block';
+    const liqFmt = (liq/100000).toFixed(1).replace(/\.0$/,'');
+    document.getElementById('j2-amount').textContent = liqFmt + 'L';
+
+    let currentRate = RATE_SAVINGS;
+    let whereText = 'Savings account';
+    let rateText = '~3% p.a.';
+    if (S.alloc.has('mf') || S.q3 === 'mf') {
+      currentRate = RATE_MF; whereText = 'Liquid MFs'; rateText = '~6.5% p.a.';
+    } else if (S.q3 === 'fd') {
+      currentRate = 0.065; whereText = 'Older FDs'; rateText = '~6.5% p.a.';
+    }
+    document.getElementById('j2-cmp-where').textContent = whereText;
+    document.getElementById('j2-cmp-now').textContent = rateText;
+
+    const extra = liq * (RATE_FD - currentRate);
+    document.getElementById('j2-extra').textContent = fmtFull(extra) + ' more';
+    document.getElementById('j2-extra-sub').textContent = 'on ' + fmt(liq) + ' at 7.75% vs ' + (currentRate*100).toFixed(1) + '% currently';
+
+    document.getElementById('fd-title').innerHTML = 'Switch your fund to an<br><em>FD on Stable Money</em>';
+  } else {
+    // Journey 1: build
+    document.getElementById('j1').style.display = 'block';
+    const bannerTitle = document.getElementById('j1-banner-title');
+    const bannerText = document.getElementById('j1-banner-text');
+    document.getElementById('j1-gap-display').textContent = fmt(gap);
+
+    const j1Banner = document.getElementById('j1-banner');
+    if (score < 40) {
+      j1Banner.className = 'insight-banner critical';
+      bannerTitle.textContent = 'You\'re one bad month away from real financial stress.';
+      bannerText.innerHTML = `With <strong>${months.toFixed(1)} months of coverage</strong>, even a short job loss or medical emergency could leave you scrambling for cash. The good news: starting now closes this gap faster than you think.`;
+    } else {
+      j1Banner.className = 'insight-banner warning';
+      bannerTitle.textContent = 'Partial coverage is better than none — but it\'s not enough.';
+      bannerText.innerHTML = `You have <strong>${months.toFixed(1)} months covered</strong>. Financial advisors recommend at least 3. A ₹${Math.round(gap/1000)}K gap stands between you and real security.`;
+    }
+
+    // Path options
+    const pathEl = document.getElementById('j1-path-options');
+    pathEl.innerHTML = '';
+    [[6,'Aggressive'], [12,'Steady'], [24,'Relaxed']].forEach(([mo, label], i) => {
+      const monthly = gap / mo;
+      const div = document.createElement('div');
+      div.className = 'path-option' + (i===1?' selected':'');
+      div.onclick = () => {
+        document.querySelectorAll('.path-option').forEach(e=>e.classList.remove('selected'));
+        div.classList.add('selected');
+      };
+      div.innerHTML = `
+        <div class="path-mo">${mo}</div>
+        <div class="path-info">
+          <div class="path-label">${label}</div>
+          <div class="path-detail">Close the ${fmt(gap)} gap in ${mo} months</div>
+        </div>
+        <div>
+          <div class="path-monthly-val">${fmt(monthly)}<span class="path-monthly-unit">/mo</span></div>
+        </div>`;
+      pathEl.appendChild(div);
+    });
+
+    document.getElementById('fd-title').innerHTML = 'Build your fund with an<br><em>FD on Stable Money</em>';
+  }
+
+  // FD section always shows
+  document.getElementById('fd-section').style.display = 'block';
+
+  // Extra earned row in comparison table
+  const fdBase = liq > 0 ? liq : target;
+  const extraEarned = fdBase * (RATE_FD - RATE_SAVINGS);
+  document.getElementById('fd-extra-earned').textContent = '+' + fmt(extraEarned) + '/yr';
+
+  // CC section always shows (as unlock)
+  document.getElementById('cc-section').style.display = 'block';
+
+  // Set CC limit = liquid savings or target (whichever is meaningful)
+  const ccBase = liq > 0 ? liq : target;
+  document.getElementById('cc-limit').textContent = fmt(Math.round(ccBase/1000)*1000);
+
+  // Share card
+  document.getElementById('share-card').style.display = 'block';
+  document.getElementById('share-score-num').textContent = score;
+  document.getElementById('share-score-num').className = 'share-score-big ' + cls;
+  document.getElementById('share-months').textContent = months.toFixed(1) + ' months of coverage';
+}
+
+function showCC() {
+  // Scroll to CC section
+  document.getElementById('cc-section').scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+function revealCC() {
+  document.getElementById('cc-trigger').style.display = 'none';
+  document.getElementById('cc-content').style.display = 'block';
+}
+
+function shareResult() {
+  const score = document.getElementById('share-score-num').textContent;
+  const months = document.getElementById('share-months').textContent;
+  const text = `My SafeStash Score: ${score}/100 — ${months}. Find out yours: safestash.in`;
+  if (navigator.share) {
+    navigator.share({ title: 'My SafeStash Score', text });
+  } else {
+    navigator.clipboard.writeText(text).then(() => alert('Copied to clipboard!'));
+  }
+}
+
+// ── Scroll reveal ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
