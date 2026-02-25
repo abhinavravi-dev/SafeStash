@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SafeStash — Know Your Financial Safety Net</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PG53MGP5Z0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PG53MGP5Z0');
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ─────────────────────────────────────────
@@ -1748,7 +1756,7 @@ body {
         </div>
       </div>
       <div class="fd-cta-wrap">
-        <button class="fd-cta" onclick="showCC()">
+        <button class="fd-cta" onclick="gtag('event','download_cta_clicked'); showCC()">
           Start your FD on Stable Money →
         </button>
         <div class="fd-cta-sub">Minimum ₹2,000 · 3-minute setup · Suryoday Bank · RBI regulated</div>
@@ -1859,6 +1867,7 @@ function selectQ1(el, val) {
   el.classList.add('selected');
   S.q1 = val;
   document.getElementById('q1-card').classList.add('answered');
+  gtag('event', 'calculator_started');
 }
 
 // ── Q2 ──
@@ -1917,6 +1926,12 @@ function showReveal() {
   const months = exp > 0 ? Math.min(liq / exp, 6) : 0;
   const score = Math.min(100, Math.round((months / 3) * 100));
   const cls = score >= 80 ? 'safe' : score >= 40 ? 'warning' : 'critical';
+
+  gtag('event', 'calculator_completed', {
+    score: score,
+    months_covered: months.toFixed(1),
+    has_gap: gap > 0
+  });
 
   // Show reveal section
   document.getElementById('reveal').style.display = 'block';
@@ -2117,6 +2132,7 @@ function showCC() {
 }
 
 function revealCC() {
+  gtag('event', 'cc_card_opened');
   document.getElementById('cc-trigger').style.display = 'none';
   document.getElementById('cc-content').style.display = 'block';
 }
