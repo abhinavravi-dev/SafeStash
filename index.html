@@ -1756,7 +1756,7 @@ body {
         </div>
       </div>
       <div class="fd-cta-wrap">
-        <button class="fd-cta" onclick="gtag('event','download_cta_clicked'); showCC()">
+        <button class="fd-cta" onclick="handleDownloadCTA()">
           Start your FD on Stable Money →
         </button>
         <div class="fd-cta-sub">Minimum ₹2,000 · 3-minute setup · Suryoday Bank · RBI regulated</div>
@@ -1810,7 +1810,7 @@ body {
             <div class="cc-perk-sub">Approved same day</div>
           </div>
         </div>
-        <div class="cc-link" onclick="alert('Opens Stable Money app')">
+        <div class="cc-link" onclick="gtag('event','cc_cta_clicked'); handleDownloadCTA()">
           Apply for the secured card →
         </div>
       </div>
@@ -2131,7 +2131,17 @@ function showCC() {
   document.getElementById('cc-section').scrollIntoView({ behavior:'smooth', block:'center' });
 }
 
-function revealCC() {
+function handleDownloadCTA() {
+  gtag('event', 'download_cta_clicked');
+  const ua = navigator.userAgent;
+  if (/android/i.test(ua)) {
+    window.location.href = 'https://play.google.com/store/apps/details?id=in.stablemoney.app';
+  } else if (/iphone|ipad|ipod/i.test(ua)) {
+    window.location.href = 'https://stablemoney.in'; // replace with App Store URL when ready
+  } else {
+    window.location.href = 'https://stablemoney.in';
+  }
+}
   gtag('event', 'cc_card_opened');
   document.getElementById('cc-trigger').style.display = 'none';
   document.getElementById('cc-content').style.display = 'block';
