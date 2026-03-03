@@ -786,7 +786,6 @@ body {
 /* ─────────────────────────────────────────
    JOURNEY PATHS
 ───────────────────────────────────────── */
-/* Journey 1: Build the fund */
 .journey-1 { display: none; }
 .journey-2 { display: none; }
 
@@ -1273,7 +1272,6 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Scroll reveal */
 .reveal {
   opacity: 1;
   transform: translateY(0);
@@ -1752,7 +1750,7 @@ body {
         </div>
       </div>
       <div class="fd-cta-wrap">
-        <button class="fd-cta" onclick="handleDownloadCTA()">
+        <button class="fd-cta" onclick="handleFdCTA()">
           Start your FD on Stable Money →
         </button>
         <div class="fd-cta-sub">Minimum ₹2,000 · 3-minute setup · Suryoday Bank · RBI regulated</div>
@@ -1806,7 +1804,7 @@ body {
             <div class="cc-perk-sub">Approved same day</div>
           </div>
         </div>
-        <div class="cc-link" onclick="gtag('event','cc_cta_clicked'); handleDownloadCTA()">
+        <div class="cc-link" onclick="handleCcCTA()">
           Apply for the secured card →
         </div>
       </div>
@@ -1847,6 +1845,10 @@ const RATE_FD = 0.0775;
 const RATE_SAVINGS = 0.03;
 const RATE_MF = 0.065;
 
+// ── Tracking state flags ──
+let _fillInitiated = false;   // fires once when user first types in any expense field
+let _fillCompleted = false;   // fires once when reveal button is clicked
+
 // ── Formatters ──
 function fmt(n) {
   if (n === 0) return '₹0';
@@ -1863,7 +1865,12 @@ function selectQ1(el, val) {
   el.classList.add('selected');
   S.q1 = val;
   document.getElementById('q1-card').classList.add('answered');
-  gtag('event', 'calculator_started');
+
+  // 🔵 EVENT: quiz_started — user has begun engaging with the tool
+  gtag('event', 'quiz_started', {
+    event_category: 'engagement',
+    q1_answer: val
+  });
 }
 
 // ── Q2 ──
@@ -1896,6 +1903,14 @@ function updateCalc() {
   S.expenses = ids.reduce((s,id) => s + (parseFloat(document.getElementById('e-'+id).value)||0), 0);
   S.liquid = parseFloat(document.getElementById('liquid-savings').value) || 0;
 
+  // 🔵 EVENT: fill_initiated — fires once when user first enters any number
+  if (!_fillInitiated && S.expenses > 0) {
+    _fillInitiated = true;
+    gtag('event', 'fill_initiated', {
+      event_category: 'engagement'
+    });
+  }
+
   document.getElementById('exp-total').textContent = fmtFull(S.expenses);
 
   if (S.expenses > 0) {
@@ -1923,10 +1938,30 @@ function showReveal() {
   const score = Math.min(100, Math.round((months / 3) * 100));
   const cls = score >= 80 ? 'safe' : score >= 40 ? 'warning' : 'critical';
 
-  gtag('event', 'calculator_completed', {
-    score: score,
-    months_covered: months.toFixed(1),
-    has_gap: gap > 0
+  // 🔵 EVENT: fill_completed — user has entered numbers and hit the CTA
+  if (!_fillCompleted) {
+    _fillCompleted = true;
+    gtag('event', 'fill_completed', {
+      event_category: 'engagement',
+      monthly_expenses: Math.round(exp),
+      liquid_savings: Math.round(liq),
+      has_liquid_savings: liq > 0,
+      q1_answered: S.q1 !== null,
+      q3_answered: S.q3 !== null
+    });
+  }
+
+  // 🔵 EVENT: score_revealed — the actual result with all key metrics
+  gtag('event', 'score_revealed', {
+    event_category: 'result',
+    safestash_score: score,
+    months_covered: parseFloat(months.toFixed(1)),
+    coverage_status: cls,                          // 'safe' | 'warning' | 'critical'
+    gap_amount: Math.round(gap),
+    has_gap: gap > 0,
+    monthly_expenses: Math.round(exp),
+    liquid_savings: Math.round(liq),
+    journey: score >= 80 ? 'upgrade' : 'build'    // which branch they see
   });
 
   // Show reveal section
@@ -2122,33 +2157,65 @@ function showReveal() {
   document.getElementById('share-months').textContent = months.toFixed(1) + ' months of coverage';
 }
 
-function showCC() {
-  // Scroll to CC section
-  document.getElementById('cc-section').scrollIntoView({ behavior:'smooth', block:'center' });
-}
+// ── FD CTA click ──
+function handleFdCTA() {
+  // 🔵 EVENT: fd_cta_clicked — primary conversion action
+  gtag('event', 'fd_cta_clicked', {
+    event_category: 'conversion',
+    cta_label: 'start_fd'
+  });
 
-function handleDownloadCTA() {
-  gtag('event', 'download_cta_clicked');
   const ua = navigator.userAgent;
   if (/android/i.test(ua)) {
     window.location.href = 'https://play.google.com/store/apps/details?id=in.stablemoney.app';
   } else if (/iphone|ipad|ipod/i.test(ua)) {
-    window.location.href = 'https://stablemoney.in'; // replace with App Store URL when ready
+    window.location.href = 'https://stablemoney.in';
   } else {
     window.location.href = 'https://stablemoney.in';
   }
 }
 
+// ── CC CTA click ──
+function handleCcCTA() {
+  // 🔵 EVENT: cc_cta_clicked — secondary conversion action
+  gtag('event', 'cc_cta_clicked', {
+    event_category: 'conversion',
+    cta_label: 'secured_card'
+  });
+
+  const ua = navigator.userAgent;
+  if (/android/i.test(ua)) {
+    window.location.href = 'https://play.google.com/store/apps/details?id=in.stablemoney.app';
+  } else if (/iphone|ipad|ipod/i.test(ua)) {
+    window.location.href = 'https://stablemoney.in';
+  } else {
+    window.location.href = 'https://stablemoney.in';
+  }
+}
+
+// ── Reveal CC card ──
 function revealCC() {
-  gtag('event', 'cc_card_opened');
+  // 🔵 EVENT: cc_card_opened — user tapped the mystery reveal
+  gtag('event', 'cc_card_opened', {
+    event_category: 'engagement'
+  });
+
   document.getElementById('cc-trigger').style.display = 'none';
   document.getElementById('cc-content').style.display = 'block';
 }
 
+// ── Share result ──
 function shareResult() {
   const score = document.getElementById('share-score-num').textContent;
   const months = document.getElementById('share-months').textContent;
   const text = `My SafeStash Score: ${score}/100 — ${months}. Find out yours: safestash.in`;
+
+  // 🔵 EVENT: result_shared — user tapped the share button
+  gtag('event', 'result_shared', {
+    event_category: 'engagement',
+    share_method: navigator.share ? 'native' : 'clipboard'
+  });
+
   if (navigator.share) {
     navigator.share({ title: 'My SafeStash Score', text });
   } else {
